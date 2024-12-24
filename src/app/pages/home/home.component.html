@@ -1,3 +1,14 @@
 <h2>Olympic games app</h2>
 <hr />
 <p>{{ (olympics$ | async)?.length }} data loaded</p>
+@if (pays!=null) {
+    @for (p of pays; track p.country) {
+        <p>Pays : {{p.country}}</p>
+        @for (part of p.participations; track part.city) {
+            <p>Pays : {{part.city}}</p>
+            
+          }
+      }
+} @else {
+    <p>Null</p>
+}
