@@ -1,14 +1,27 @@
-<h2>Olympic games app</h2>
+<div><h2>Medals per Country</h2></div>
 <hr />
-<p>{{ (olympics$ | async)?.length }} data loaded</p>
-@if (pays!=null) {
-    @for (p of pays; track p.country) {
-        <p>Pays : {{p.country}}</p>
-        @for (part of p.participations; track part.city) {
-            <p>Pays : {{part.city}}</p>
-            
-          }
-      }
-} @else {
-    <p>Null</p>
-}
+<!--p>{{  }} data loaded</p>
+ <div>
+  <div>
+  <p>Number of JOs : {{(olympics$ | async)?.length}}</p>
+  </div>
+  <div>
+  <p>Number of country : </p>
+  </div>
+ </div-->
+<ngx-charts-pie-chart
+  [view]="view"
+  [scheme]="colorScheme"
+  [results]="chartData"
+  [gradient]="gradient"
+  [legend]="showLegend"
+  [legendPosition]="legendPosition"
+  [labels]="showLabels"
+  [doughnut]="isDoughnut"
+  (select)="onSelect($event)"
+  (activate)="onActivate($event)"
+  (deactivate)="onDeactivate($event)"
+  (dblclick)="onDlClik($event)"
+  >
+</ngx-charts-pie-chart>
+
