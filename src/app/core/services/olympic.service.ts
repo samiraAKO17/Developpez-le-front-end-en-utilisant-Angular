@@ -12,8 +12,7 @@ import { participation } from '../models/Participation';
 export class OlympicService {
   [x: string]: any;
   private olympicUrl = './assets/mock/olympic.json';
-  private olympics$ =new BehaviorSubject<Olympic[] | any> (undefined);
-  pays : Pays []=  [] ;
+  private olympics$ =new BehaviorSubject<Olympic[] > ([]);
   constructor(private http: HttpClient) {
     // this.olympics$;
   }
@@ -25,7 +24,7 @@ export class OlympicService {
         // TODO: improve error handling
         console.error(error);
         // can be useful to end loading state and let the user know something went wrong
-        this.olympics$.next(null);
+        this.olympics$.next([]);
         return caught;
       })
     );
@@ -38,19 +37,15 @@ export class OlympicService {
   }
   
   
-  getCountry(id:number ): Observable<{ name: string; series: { name: string; value: number }[] } | any> {
+  getCountry(id:number ): Observable<{ name: string; series: { name: string; value: number }[] } > {
     return this.getOlympics().pipe(
       map((olympics) => {
-       // console.log("get country O.S:" + olympics);
-        let country: Olympic |null=null; 
-        if(olympics){
-          //console.log("id_country in O.S :"+id);
-          
-         country = olympics?.find((o:Olympic) => o.id == id);
-        if (!country) throw new Error(`Country with ID ${id} not found`);}
+       
+        const country = olympics?.find((o:Olympic) => o.id == id);
+        if (!country) throw new Error(`Country with ID ${id} not found`);
         return {
-          name: country?.country,
-          series: country?.participations.map((p :participation) => ({
+          name: country.country,
+          series: country.participations.map((p :participation) => ({
             name: p.year.toString(), 
             value: p.medalsCount,   
           })),
@@ -60,13 +55,44 @@ export class OlympicService {
   }
   getTotalJos(): Observable< {totalJos: number} > {
     return this.getOlympics().pipe(
+      map((olympics) => ({
+        totalJos: olympics.reduce((sum, o) => sum + o.participations.length, 0),
+      }))
+    );
+                
+  }
+  getNbCountry(): Observable< {total: number} > {
+    return this.getOlympics().pipe(
       map(
         (olympics) => {
-          const country = olympics.find((o:Olympic) => o.country === "France");
-          if (!country) throw new Error(`Country with ID ${"Italy"} not found`);
+         
           return {
                    
-                    totalJos: country.participations.reduce((sum:number, p:participation) => sum + 1, 0),
+                    total: olympics.reduce((sum:number, o:Olympic) => sum + 1, 0)
+                  }
+  }));
+                
+  }
+  getCountryId(name:string): Observable< {id: number} > {
+    return this.getOlympics().pipe(
+      map(
+        (olympics) => {
+          const country = olympics.find((o:Olympic) => o.country === name);
+          if (!country) throw new Error(`Country with name ${name} not found`);
+          return {
+                  id: country.id
+                  }
+  }));
+                
+  }
+  getCountryNameById(id:number): Observable< {name: string} > {
+    return this.getOlympics().pipe(
+      map(
+        (olympics) => {
+          const country = olympics.find((o:Olympic) => o.id == id);
+          if (!country) throw new Error(`Country with ID ${id} not found`);
+          return {
+                  name: country.country
                   }
   }));
                 
@@ -99,7 +125,7 @@ export class OlympicService {
     return this.getOlympics().pipe(
       map(
         (olympics) => {
-          const country = olympics.find((o:Olympic) => o.id === id);
+          const country = olympics.find((o:Olympic) => o.id == id);
           if (!country) throw new Error(`Country with ID ${id} not found`);
           return {
                    

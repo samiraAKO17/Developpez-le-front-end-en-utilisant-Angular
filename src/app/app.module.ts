@@ -9,7 +9,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { DetailsComponent } from "./pages/details/details.component";
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, NotFoundComponent],
+  declarations: [AppComponent, NotFoundComponent,],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, NgxChartsModule, DetailsComponent],
   providers: [],
   bootstrap: [AppComponent],
