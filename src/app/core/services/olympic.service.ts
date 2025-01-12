@@ -14,7 +14,6 @@ export class OlympicService {
   private olympicUrl = './assets/mock/olympic.json';
   private olympics$ =new BehaviorSubject<Olympic[] > ([]);
   constructor(private http: HttpClient) {
-    // this.olympics$;
   }
 
   loadInitialData() {
@@ -36,7 +35,7 @@ export class OlympicService {
     
   }
   
-  
+    // Obtenir les données d'un pays spécifique (par id)
   getCountry(id:number ): Observable<{ name: string; series: { name: string; value: number }[] } > {
     return this.getOlympics().pipe(
       map((olympics) => {
@@ -53,6 +52,7 @@ export class OlympicService {
       })
     );
   }
+  
   getTotalJos(): Observable< {totalJos: number} > {
     return this.getOlympics().pipe(
       map((olympics) => ({
@@ -73,6 +73,7 @@ export class OlympicService {
   }));
                 
   }
+    // Obtenir l'ID d'un pays à partir de son nom
   getCountryId(name:string): Observable< {id: number} > {
     return this.getOlympics().pipe(
       map(
@@ -85,6 +86,8 @@ export class OlympicService {
   }));
                 
   }
+
+    // Obtenir le nom d'un pays à partir de son ID
   getCountryNameById(id:number): Observable< {name: string} > {
     return this.getOlympics().pipe(
       map(
@@ -97,6 +100,7 @@ export class OlympicService {
   }));
                 
   }
+  // Obtenir tous les pays et leur nombre total de médailles
   getCountries(): Observable<{ country: string; totalMedals: number }[]> {
     return this.getOlympics().pipe(
       map((olympics) =>
@@ -107,7 +111,8 @@ export class OlympicService {
       )
     );
   }
-  
+
+  // Obtenir le nombre total de médailles pour un pays donné
   getTotalMedals(id:number): Observable< {totalMedals: number} > {
     return this.getOlympics().pipe(
       map(
@@ -121,6 +126,7 @@ export class OlympicService {
   }));
                 
   }
+    // Obtenir le nombre total d'athletes pour un pays donné
   getTotalAtheletics(id:number): Observable< {totalAthletics: number} > {
     return this.getOlympics().pipe(
       map(
@@ -134,6 +140,7 @@ export class OlympicService {
   }));
                 
   }
+    // Obtenir les données d'un pays spécifique (par nom)
   getCountryByName(name: string): Observable<{ name: string; series: { name: string; value: number }[] }> {
     return this.getOlympics().pipe(
       map((olympics) => {

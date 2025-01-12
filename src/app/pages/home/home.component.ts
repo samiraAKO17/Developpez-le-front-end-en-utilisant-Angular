@@ -7,11 +7,12 @@ import { participation } from 'src/app/core/models/Participation';
 import { Olympic } from 'src/app/core/models/Olympic';
 import { Router, RouterModule } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
+import { NgStyle } from '@angular/common';
 
 @Component({
   selector: 'app-home',
     standalone: true,
-    imports: [NgxChartsModule, RouterModule],
+    imports: [NgxChartsModule, RouterModule, NgStyle],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
@@ -84,8 +85,15 @@ export class HomeComponent implements OnInit {
   onDeactivate(data  : { name: string; value: number }): void {
     console.log('Deactivate', JSON.parse(JSON.stringify(data)));
   }
-  onDlClik(data  : { name: string; value: number }){
-    const countryName = data.name;
+  onDlClik(event: { data: { name: string; value: number } }){
+    console.log('Données reçues pour onDlClik:', event);
+
+    const name = event?.data?.name;
+    if (!name) {
+      console.error('Nom du pays introuvable. Assurez-vous que les données du graphique contiennent un champ "name".', event);
+      return;
+    }
+    const countryName = event.data.name;
     this.olympicService
       .getCountryId(countryName)
       .pipe(takeUntil(this.destroy$))

@@ -1,14 +1,17 @@
+<a routerLink ="/" routerLinkActive="active">Home</a>
 <div>
  
-    <a routerLink ="/" routerLinkActive="active">Home</a>
+    
+  <h2>{{country}}</h2>
 
   
 </div>
 <div>
-  <p>Nom_Pays : {{country}}</p>
-  <p>Nbre Total Medails : {{ totalMedals}}</p>
-  <p>Nbre Total athletics : {{totalAthletics}}</p>
-
+  <p>Nombre of entries <br><span>{{ linechartData[0].series.length}}</span> </p>
+  <p>Nombre Total Medails <br><span>{{ totalMedals}}</span> </p>
+  <p>Nbre Total athletics <br><span>{{totalAthletics}}</span> </p>
+</div>
+<div>
 <ngx-charts-line-chart
   [view]="view"
   [scheme]="colorScheme"
