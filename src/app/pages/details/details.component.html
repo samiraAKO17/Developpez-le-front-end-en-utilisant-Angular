@@ -1,4 +1,4 @@
-<a routerLink ="/" routerLinkActive="active">Home</a>
+<div class="container"><a routerLink ="/" routerLinkActive="active">Home</a>
 <div>
  
     
@@ -7,11 +7,11 @@
   
 </div>
 <div>
-  <p>Nombre of entries <br><span>{{ linechartData[0].series.length}}</span> </p>
-  <p>Nombre Total Medails <br><span>{{ totalMedals}}</span> </p>
-  <p>Nbre Total athletics <br><span>{{totalAthletics}}</span> </p>
+  <p>Number of Entries <br><span>{{ linechartData[0].series.length}}</span> </p>
+  <p>Total Medals <br><span>{{ totalMedals}}</span> </p>
+  <p>Total Athletics <br><span>{{totalAthletics}}</span> </p>
 </div>
-<div>
+<div class="stats" id="stats">
 <ngx-charts-line-chart
   [view]="view"
   [scheme]="colorScheme"
@@ -30,4 +30,4 @@
   >
 </ngx-charts-line-chart>
 </div>
-  
+  </div>

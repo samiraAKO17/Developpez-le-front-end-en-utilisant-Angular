@@ -1,3 +1,4 @@
+<div class="container">
 <div class="nav"><h2>Medals per Country</h2></div>
 
 
@@ -9,7 +10,7 @@
  
  </div>
  <div>
-  <ngx-charts-pie-chart
+<ngx-charts-pie-chart
   [view]="view"
   [scheme]="colorScheme"
   [results]="chartData"
@@ -21,9 +22,11 @@
   (select)="onSelect($event)"
   (activate)="onActivate($event)"
   (deactivate)="onDeactivate($event)"
-  (dblclick)="onDlClik($event)"
+  
+
   >
 </ngx-charts-pie-chart>
 
  </div>
 
+</div>

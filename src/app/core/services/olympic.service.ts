@@ -10,7 +10,6 @@ import { participation } from '../models/Participation';
   providedIn: 'root',
 })
 export class OlympicService {
-  [x: string]: any;
   private olympicUrl = './assets/mock/olympic.json';
   private olympics$ =new BehaviorSubject<Olympic[] > ([]);
   constructor(private http: HttpClient) {

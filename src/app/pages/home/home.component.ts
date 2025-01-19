@@ -11,8 +11,8 @@ import { NgStyle } from '@angular/common';
 
 @Component({
   selector: 'app-home',
-    standalone: true,
-    imports: [NgxChartsModule, RouterModule, NgStyle],
+  standalone: true,
+  imports: [NgxChartsModule, RouterModule, NgStyle],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
@@ -73,10 +73,6 @@ export class HomeComponent implements OnInit {
 
   }
   
- 
-  onSelect(data : { name: string; value: number }): void {
-    console.log('Item clicked', JSON.parse(JSON.stringify(data)));
-  }
 
   onActivate(data  : { name: string; value: number }): void {
     console.log('Activate', JSON.parse(JSON.stringify(data)));
@@ -85,15 +81,17 @@ export class HomeComponent implements OnInit {
   onDeactivate(data  : { name: string; value: number }): void {
     console.log('Deactivate', JSON.parse(JSON.stringify(data)));
   }
-  onDlClik(event: { data: { name: string; value: number } }){
-    console.log('Données reçues pour onDlClik:', event);
+  
+  //fonction appeler lors du click sur pays pour renvoyer vers la page details
+  onSelect(event:{name:string;  value:number; label:string}){
+   // console.log('Données reçues pour onSelect:', event);
 
-    const name = event?.data?.name;
+    const name = event.name;
     if (!name) {
-      console.error('Nom du pays introuvable. Assurez-vous que les données du graphique contiennent un champ "name".', event);
+      console.error('Nom du pays introuvable "name".', event);
       return;
     }
-    const countryName = event.data.name;
+    const countryName = event.name;
     this.olympicService
       .getCountryId(countryName)
       .pipe(takeUntil(this.destroy$))
