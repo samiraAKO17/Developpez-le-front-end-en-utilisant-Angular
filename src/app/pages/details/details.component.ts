@@ -4,7 +4,7 @@ import { Pays } from 'src/app/core/models/Pays';
 import { OlympicService } from 'src/app/core/services/olympic.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Olympic } from 'src/app/core/models/Olympic';
-import { filter, map, Observable, of, Subject, takeUntil } from 'rxjs';
+import { filter, map, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { AUTO_STYLE } from '@angular/animations';
 
@@ -58,43 +58,53 @@ export class DetailsComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.id_country = this.route.snapshot.params['id'];
-    console.log(this.id_country);
+    this.route.params
+    .pipe(
+      map((params) => params['id']),
+      switchMap((id) => this.olympicService.getOlympics().pipe(
+        filter((olympics) => olympics.length > 0), // Attendre que les données soient chargées
+        map(() => id)
+      ))
+    )
+    .subscribe({
+      next: (id) => {
+        this.id_country = id;
+        this.loadCountryDetails();
+      },
+      error: (err) => console.error('Erreur:', err),
+    });
+}
 
+loadCountryDetails() {
+  this.olympicService.getOlympics()
+  .pipe(takeUntil(this.destroy$))
+  .subscribe(data =>
+    this.olympics$ = new Observable<Olympic[]>(observer => observer.next(data))
+  );
+  
+  this.olympicService.getCountry(this.id_country)
+  .pipe(takeUntil(this.destroy$))
+  .subscribe((data) => {
+    this.linechartData.push(data);
+  });
 
-    this.olympicService.getOlympics()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(data =>
-        this.olympics$ = new Observable<Olympic[]>(observer => observer.next(data))
-      );
+this.olympicService.getTotalMedals(this.id_country)
+  .pipe(takeUntil(this.destroy$))
+  .subscribe((data) => {
+    this.totalMedals = data.totalMedals;
+  })
 
-
-    this.olympicService.getCountry(this.id_country)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((data) => {
-        this.linechartData.push(data);
-      });
-
-    this.olympicService.getTotalMedals(this.id_country)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((data) => {
-        this.totalMedals = data.totalMedals;
-      })
-
-    this.olympicService.getTotalAtheletics(this.id_country)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((data) => {
-        this.totalAthletics = data.totalAthletics;
-      })
-    this.olympicService.getCountryNameById(this.id_country)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((data) => {
-        this.country = data.name;
-      })
-
-
-  }
-
+this.olympicService.getTotalAtheletics(this.id_country)
+  .pipe(takeUntil(this.destroy$))
+  .subscribe((data) => {
+    this.totalAthletics = data.totalAthletics;
+  })
+this.olympicService.getCountryNameById(this.id_country)
+  .pipe(takeUntil(this.destroy$))
+  .subscribe((data) => {
+    this.country = data.name;
+  })
+}
   onSelect(data: { name: string; value: number }): void {
     console.log('Item clicked', JSON.parse(JSON.stringify(data)));
   }

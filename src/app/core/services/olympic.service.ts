@@ -29,16 +29,13 @@ export class OlympicService {
   }
 
   getOlympics() {
-    //this.getPays();
-    return this.olympics$.asObservable();
-    
+     return this.olympics$.asObservable();
   }
   
     // Obtenir les données d'un pays spécifique (par id)
   getCountry(id:number ): Observable<{ name: string; series: { name: string; value: number }[] } > {
     return this.getOlympics().pipe(
-      map((olympics) => {
-       
+      map((olympics) => {       
         const country = olympics?.find((o:Olympic) => o.id == id);
         if (!country) throw new Error(`Country with ID ${id} not found`);
         return {
