@@ -1,33 +1,15 @@
-<div class="container"><a routerLink ="/" routerLinkActive="active">Home</a>
-<div>
- 
-    
-  <h2>{{country}}</h2>
-
-  
-</div>
-<div>
-  <p>Number of Entries <br><span>{{ linechartData[0].series.length}}</span> </p>
-  <p>Total Medals <br><span>{{ totalMedals}}</span> </p>
-  <p>Total Athletics <br><span>{{totalAthletics}}</span> </p>
-</div>
-<ngx-charts-line-chart
-  [view]="view"
-  [scheme]="colorScheme"
-  [legend]="legend"
-  [showXAxisLabel]="showXAxisLabel"
-  [showYAxisLabel]="showYAxisLabel"
-  [xAxis]="xAxis"
-  [yAxis]="yAxis"
-  [xAxisLabel]="xAxisLabel"
-  [yAxisLabel]="yAxisLabel"
-  [timeline]="timeline"
-  [results]="linechartData"
-  (select)="onSelect($event)"
-  (activate)="onActivate($event)"
-  (deactivate)="onDeactivate($event)"
-  (window:resize)="onResize($event)"
-  >
-</ngx-charts-line-chart>
-
+<div class="container"><a routerLink="/" routerLinkActive="active">Home</a>
+  <div>
+    <h2>{{country}}</h2>
   </div>
+  <div>
+    <p>Number of Entries <br><span>{{ linechartData[0].series.length}}</span> </p>
+    <p>Total Medals <br><span>{{ totalMedals}}</span> </p>
+    <p>Total Athletics <br><span>{{totalAthletics}}</span> </p>
+  </div>
+  <ngx-charts-line-chart [view]="view" [scheme]="colorScheme" [legend]="legend" [showXAxisLabel]="showXAxisLabel"
+    [showYAxisLabel]="showYAxisLabel" [xAxis]="xAxis" [yAxis]="yAxis" [xAxisLabel]="xAxisLabel"
+    [yAxisLabel]="yAxisLabel" [timeline]="timeline" [results]="linechartData" (select)="onSelect($event)"
+    (activate)="onActivate($event)" (deactivate)="onDeactivate($event)" (window:resize)="onResize($event)">
+  </ngx-charts-line-chart>
+</div>

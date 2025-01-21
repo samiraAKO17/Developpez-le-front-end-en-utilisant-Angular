@@ -2,21 +2,13 @@
   <div class="nav">
     <h2>Medals per Country</h2>
   </div>
-
-
   <div>
-
     <p>Number of JOs <br><span>{{nb_jos}}</span> </p>
-
     <p>Number of country <br> <span>{{nb_country}}</span></p>
-
   </div>
- 
-    <ngx-charts-pie-chart [view]="view" [scheme]="colorScheme" [results]="chartData" [gradient]="gradient"
-      [legend]="showLegend" [legendPosition]="legendPosition" [labels]="showLabels" [doughnut]="isDoughnut"
-      (select)="onSelect($event)" (activate)="onActivate($event)" (deactivate)="onDeactivate($event)" (window:resize)="onResize($event)">
-    </ngx-charts-pie-chart>
-
-  
-
+  <ngx-charts-pie-chart [view]="view" [scheme]="colorScheme" [results]="chartData" [gradient]="gradient"
+    [legend]="showLegend" [legendPosition]="legendPosition" [labels]="showLabels" [doughnut]="isDoughnut"
+    (select)="onSelect($event)" (activate)="onActivate($event)" (deactivate)="onDeactivate($event)"
+    (window:resize)="onResize($event)">
+  </ngx-charts-pie-chart>
 </div>

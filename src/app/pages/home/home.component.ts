@@ -18,76 +18,60 @@ import { NgStyle } from '@angular/common';
 })
 export class HomeComponent implements OnInit {
 
-  public olympics$= new Observable<Olympic []> ();
+  public olympics$ = new Observable<Olympic[]>();
   olympics: Olympic[] = [];
   view: [number, number] = [700, 400];
   chartData: { name: string; value: number }[] = [];
-  nb_jos=0;  
-  nb_country=0;  
-  country_id!:number;
+  nb_jos = 0;
+  nb_country = 0;
+  country_id!: number;
   // options
   gradient: boolean = true;
   showLegend: boolean = true;
   showLabels: boolean = true;
   isDoughnut: boolean = false;
   legendPosition: LegendPosition = LegendPosition.Below;
-  colorScheme: Color = { 
-    domain: ['#5AA454', '#A10A28', '#C7B42C', '#C7B48B', '#AAAAAA'], 
-    group: ScaleType.Ordinal, 
-    selectable: true, 
-    name: 'Customer Usage', 
-};
-    private destroy$ = new Subject<void>();
-
-
+  colorScheme: Color = {
+    domain: ['#5AA454', '#A10A28', '#C7B42C', '#C7B48B', '#AAAAAA'],
+    group: ScaleType.Ordinal,
+    selectable: true,
+    name: 'Customer Usage',
+  };
+  private destroy$ = new Subject<void>();
   constructor(private olympicService: OlympicService, private router: Router) {
-    if(window.innerWidth<700)
-    this.view = [window.innerWidth / 1.05, 400];
-
+    if (window.innerWidth < 700)
+      this.view = [window.innerWidth / 1.05, 400];
   }
-
   ngOnInit(): void {
-
     this.olympicService.getOlympics()
-    .pipe(takeUntil(this.destroy$))
-    .subscribe(data=>
-      this.olympics$ = new Observable<Olympic[]>(observer => observer.next(data))
-     );
-    
-   
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(data =>
+        this.olympics$ = new Observable<Olympic[]>(observer => observer.next(data))
+      );
     this.olympicService.getCountries()
-    .pipe(takeUntil(this.destroy$))
-    .subscribe((data) => {
-      this.chartData = data.map((d) => ({ name: d.country, value: d.totalMedals }));
-    });
-    
-     this.olympicService.getNbCountry()
-     .pipe(takeUntil(this.destroy$))
-     .subscribe((data)=>{
-      this.nb_country=data.total;
-    });
-
-     this.olympicService.getTotalJos()
-     .pipe(takeUntil(this.destroy$))
-     .subscribe((data)=>{
-       this.nb_jos=data.totalJos/this.nb_country;
-     });
-
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.chartData = data.map((d) => ({ name: d.country, value: d.totalMedals }));
+      });
+    this.olympicService.getNbCountry()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.nb_country = data.total;
+      });
+    this.olympicService.getTotalJos()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.nb_jos = data.totalJos / this.nb_country;
+      });
   }
-  
-
-  onActivate(data  : { name: string; value: number }): void {
+  onActivate(data: { name: string; value: number }): void {
     console.log('Activate', JSON.parse(JSON.stringify(data)));
   }
-
-  onDeactivate(data  : { name: string; value: number }): void {
+  onDeactivate(data: { name: string; value: number }): void {
     console.log('Deactivate', JSON.parse(JSON.stringify(data)));
   }
-  
   //fonction appeler lors du click sur pays pour renvoyer vers la page details
-  onSelect(event:{name:string;  value:number; label:string}){
-   // console.log('Données reçues pour onSelect:', event);
-
+  onSelect(event: { name: string; value: number; label: string }) {
     const name = event.name;
     if (!name) {
       console.error('Nom du pays introuvable "name".', event);
@@ -101,16 +85,16 @@ export class HomeComponent implements OnInit {
         const countryId = response.id;
         this.router.navigate(['/details', countryId]);
       });
-
-}
-onResize(event:any) {
-  this.view = [event.target.innerWidth / 1.05, 400];
-}
-
+  }
+  onResize(event: UIEvent) {
+    let targ = <Window>(event?.target);
+    if (targ)
+      this.view = [targ.innerWidth / 1.05, 400];
+  }
   ngOnDestroy(): void {
-      // Émettre un signal pour se désinscrire
-      this.destroy$.next();
-      this.destroy$.complete();
-     // console.log('Component destroyed, unsubscribed');
-}
+    // Émettre un signal pour se désinscrire
+    this.destroy$.next();
+    this.destroy$.complete();
+    // console.log('Component destroyed, unsubscribed');
+  }
 }

@@ -16,18 +16,14 @@ import { AUTO_STYLE } from '@angular/animations';
   styleUrl: './details.component.scss'
 })
 export class DetailsComponent implements OnInit {
-  
   public olympics$: Observable<Olympic[]> = new Observable<Olympic[]>();
   totalMedals!: number;
   country!: string;
   totalAthletics!: number;
   id_country!: number;
   view: [number, number] = [700, 400];
-
   //linechartadat;
   linechartData: { name: string; series: { name: string; value: number }[] }[] = [];
-
-
   // options
   legend: boolean = false;
   showLabels: boolean = true;
@@ -47,84 +43,76 @@ export class DetailsComponent implements OnInit {
     name: 'Customer Usage',
   };
   private destroy$ = new Subject<void>();
-
-
   constructor(private route: ActivatedRoute, private olympicService: OlympicService, private router: Router) {
     this.ngOnInit();
-    if(window.innerWidth<700)
-    this.view = [window.innerWidth / 1.05, 400];
-   }
-
-
-
+    if (window.innerWidth < 700)
+      this.view = [window.innerWidth / 1.05, 400];
+  }
   ngOnInit(): void {
     this.route.params
-    .pipe(
-      map((params) => params['id']),
-      switchMap((id) => this.olympicService.getOlympics().pipe(
-        filter((olympics) => olympics.length > 0), // Attendre que les données soient chargées
-        map(() => id)
-      ))
-    )
-    .subscribe({
-      next: (id) => {
-        this.id_country = id;
-        this.loadCountryDetails();
-      },
-      error: (err) => console.error('Erreur:', err),
-    });
-}
+      .pipe(
+        map((params) => params['id']),
+        switchMap((id) => this.olympicService.getOlympics().pipe(
+          filter((olympics) => olympics.length > 0), // Attendre que les données soient chargées avant de récupéré le pays par son ID
+          map(() => id)
+        ))
+      )
+      .subscribe({
+        next: (id) => {
+          this.id_country = id;
+          this.loadCountryDetails();
+        },
+        error: (err) => console.error('Erreur:', err),
+      });
+  }
+  loadCountryDetails() {
+    this.olympicService.getOlympics()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(data =>
+        this.olympics$ = new Observable<Olympic[]>(observer => observer.next(data))
+      );
 
-loadCountryDetails() {
-  this.olympicService.getOlympics()
-  .pipe(takeUntil(this.destroy$))
-  .subscribe(data =>
-    this.olympics$ = new Observable<Olympic[]>(observer => observer.next(data))
-  );
-  
-  this.olympicService.getCountry(this.id_country)
-  .pipe(takeUntil(this.destroy$))
-  .subscribe((data) => {
-    this.linechartData.push(data);
-  });
+    this.olympicService.getCountry(this.id_country)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.linechartData.push(data);
+      });
 
-this.olympicService.getTotalMedals(this.id_country)
-  .pipe(takeUntil(this.destroy$))
-  .subscribe((data) => {
-    this.totalMedals = data.totalMedals;
-  })
-
-this.olympicService.getTotalAtheletics(this.id_country)
-  .pipe(takeUntil(this.destroy$))
-  .subscribe((data) => {
-    this.totalAthletics = data.totalAthletics;
-  })
-this.olympicService.getCountryNameById(this.id_country)
-  .pipe(takeUntil(this.destroy$))
-  .subscribe((data) => {
-    this.country = data.name;
-  })
-}
+    this.olympicService.getTotalMedals(this.id_country)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.totalMedals = data.totalMedals;
+      })
+    this.olympicService.getTotalAtheletics(this.id_country)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.totalAthletics = data.totalAthletics;
+      })
+    this.olympicService.getCountryNameById(this.id_country)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.country = data.name;
+      })
+  }
   onSelect(data: { name: string; value: number }): void {
     console.log('Item clicked', JSON.parse(JSON.stringify(data)));
   }
-
   onActivate(data: { name: string; value: number }): void {
     console.log('Activate', JSON.parse(JSON.stringify(data)));
   }
-
   onDeactivate(data: { name: string; value: number }): void {
     console.log('Deactivate', JSON.parse(JSON.stringify(data)));
   }
-  onResize(event: any) {
-    this.view = [event.target.innerWidth / 1.05, 400];
+  //Redimenssionné la view dès que l'élément change de taille
+  onResize(event: UIEvent) {
+    let targ = <Window>(event?.target);
+    if (targ)
+      this.view = [targ.innerWidth / 1.05, 400];
   }
-
-
+  //unsubscribe
   ngOnDestroy(): void {
     // Émettre un signal pour se désinscrire
     this.destroy$.next();
     this.destroy$.complete();
   }
-
 }

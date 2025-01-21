@@ -1,21 +1,17 @@
-/* You can add global styles to this file, and also import other style files */
 @media (max-width: 768px) {
     .container {
         width: 100%;
         aspect-ratio: 4/3;
     }
-    div{
+    div {
         width: 100%;
     }
-    div >div{
+    div>div {
         width: auto;
         aspect-ratio: 4/3;
     }
     h2 {
         font-size: 1.5rem;
-    }
-    .stats p {
-        flex: 1 1 100%; // Une colonne sur petits écrans
     }
     ngx-charts-line-chart {
         width: 100%; // Adapter la taille du graphique
@@ -28,7 +24,6 @@
         margin-top: 20px;
     }
 }
-
 .container {
     display: flex;
     flex-direction: column;
@@ -37,37 +32,11 @@
     max-width: 1200px;
     margin: 0 0;
 }
-
 h2 {
     font-size: 2rem;
     margin-bottom: 20px;
     text-align: center;
 }
-
-.stats {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    flex-wrap: wrap;
-}
-
-.stats p {
-    font-size: 1rem;
-    padding: 10px 20px;
-    border: 2px solid #0c5e75;
-    border-radius: 8px;
-    text-align: center;
-    flex: 1 1 calc(50% - 30px); // Répartition sur deux colonnes
-}
-
-ngx-charts-line-chart {
-    margin-top: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-    overflow: hidden;
-    text-align: justify;
-}
-
 div {
     display: flex;
     flex-direction: row;
@@ -75,9 +44,7 @@ div {
     margin: auto auto;
     max-width: 800px;
     text-align: center;
-
 }
-
 /* Style du titre */
 h2 {
     font-family: 'Arial Narrow', 'Arial', 'sans-serif';
@@ -90,19 +57,16 @@ h2 {
     background-color: #0c5e75;
     color: white;
     text-align: center;
-
 }
 
 /* Conteneur des statistiques */
 div>div {
     display: flex;
     justify-content: center;
-    align-items: center;
     /* Aligne les items verticalement */
-
+    align-items: center;
 }
 
-/* Style pour les paragraphes */
 p {
     font-size: 1.2rem;
     padding: 10px 20px;
@@ -127,18 +91,17 @@ ngx-charts-pie-chart {
     overflow: hidden;
     text-align: justify;
 }
-
 p span {
-    font-size: 1.5rem;
     /* Agrandit légèrement le texte */
+    font-size: 1.5rem;
     font-weight: bold;
-    color: #000;
     /* Noir plus foncé */
-    margin-top: 5px;
+    color: #000;
     /* Ajoute un petit espace au-dessus */
+    margin-top: 5px;
 }
 @media (max-width: 480px) {
     div {
-      width: auto;
+        width: auto;
     }
-  }
+}
