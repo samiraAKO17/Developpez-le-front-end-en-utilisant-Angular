@@ -12,7 +12,7 @@ import { NgStyle } from '@angular/common';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [NgxChartsModule, RouterModule, NgStyle],
+  imports: [NgxChartsModule, RouterModule],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
@@ -41,6 +41,8 @@ export class HomeComponent implements OnInit {
 
 
   constructor(private olympicService: OlympicService, private router: Router) {
+    if(window.innerWidth<700)
+    this.view = [window.innerWidth / 1.05, 400];
 
   }
 
@@ -100,6 +102,9 @@ export class HomeComponent implements OnInit {
         this.router.navigate(['/details', countryId]);
       });
 
+}
+onResize(event:any) {
+  this.view = [event.target.innerWidth / 1.05, 400];
 }
 
   ngOnDestroy(): void {

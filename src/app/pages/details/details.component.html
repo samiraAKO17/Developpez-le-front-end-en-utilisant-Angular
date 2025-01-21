@@ -11,7 +11,6 @@
   <p>Total Medals <br><span>{{ totalMedals}}</span> </p>
   <p>Total Athletics <br><span>{{totalAthletics}}</span> </p>
 </div>
-<div class="stats" id="stats">
 <ngx-charts-line-chart
   [view]="view"
   [scheme]="colorScheme"
@@ -27,7 +26,8 @@
   (select)="onSelect($event)"
   (activate)="onActivate($event)"
   (deactivate)="onDeactivate($event)"
+  (window:resize)="onResize($event)"
   >
 </ngx-charts-line-chart>
-</div>
+
   </div>
