@@ -97,4 +97,7 @@ export class HomeComponent implements OnInit {
     this.destroy$.complete();
     // console.log('Component destroyed, unsubscribed');
   }
+  customTooltip({ data }: { data: { name: string; value: number } }): string {
+    return `<div class="custom-tooltip"> ${data.name} <br> <div><img src="../../../assets/badge.png" class="medal-icon" alt="Medal Icon"> ${data.value}</div></div>`;
+  }
 }
