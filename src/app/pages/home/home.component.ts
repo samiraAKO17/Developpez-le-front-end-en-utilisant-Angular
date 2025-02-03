@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit {
   isDoughnut: boolean = false;
   legendPosition: LegendPosition = LegendPosition.Below;
   colorScheme: Color = {
-    domain: ['#5AA454', '#A10A28', '#C7B42C', '#C7B48B', '#AAAAAA'],
+    domain: ['#956065', '#b8cbe7', '#89a1db', '#793d52', '#9780a1'],
     group: ScaleType.Ordinal,
     selectable: true,
     name: 'Customer Usage',
